@@ -3,7 +3,7 @@
 Variables, methods, and classes should have a clear naming. Clear naming makes anyone who read the code have a good hint of what it means at first sight. Clear does not mean short, clear means it tells you what the intentions are.
 For example below is a function to get first name and last name from fullname and append it with “.”, the purpose of this function is to get username.
 
-```
+```javascript
 // code 1
 function getName(text) {
 	const len = text.split(" ").length;
@@ -16,7 +16,7 @@ As we see function above looks correct  and straightforward, but for user who ar
 
 Now let’s compare with this function:
 
-```
+```javascript
 // code 2
 function getUsername(fullname) {
 	const names = fullname.split(" ");
@@ -30,12 +30,12 @@ From the function name reader can see directly, that this function will generate
 User can easily skim what results yielded  on each line because it is assigned to a clear named variables, plus added comment. It is also relatively easier to debug and less error prone, reader can check what values each line produced.
 
 Key takeaways:
- 
+
 * Use clear, make-sense naming.
 * Name your variables and methods/functions with intent to explain your code.
 
 ## Keep It Small
-Software development is about breaking one system into smaller features, develops them, and combines them into a system that work each other.  Generally, smaller unit makes it easier for us to read and understand the algorithm used or what it actully does under the hood. 
+Software development is about breaking one system into smaller features, develops them, and combines them into a system that work each other.  Generally, smaller unit makes it easier for us to read and understand the algorithm used or what it actully does under the hood.
 
 ### Class
 Smaller Class makes it to be single responsible, it is focused on solving specific features or spec. Several best practices:
@@ -47,12 +47,12 @@ Smaller method / function makes it easy to read, debug and update. Several best 
 * Maximum of 4 parameters, hash options are parameters. (Sandy Metz’s Rule)
 * No longer than 20 lines of code (Clean Code)
 
-## Do One Thing, and Do it Well (Single Responsibility)
-Large software is built from many pieces that works well.  Most complexities comes from one thing that should do just one thing, but do 2 or more things instead. 
+## Do One Thing, and Do it Well: Single Responsibility
+Large software is built from many pieces that works well.  Most complexities comes from one thing that should do just one thing, but do 2 or more things instead.
 
 Consider this example:
 
-```
+```typescript
 class PersonDTO {
 	// some params
 }
@@ -69,7 +69,7 @@ class PersonUtil {
 		this.personCache.flushAll(); // Will produce Buggy code! (1)
 		return person;
 	}
-  
+
   public fastGetPerson(personId: string): Person {
 		return this.personCache.findById(personId);
 	}
@@ -79,23 +79,23 @@ class PersonService {
 	constructor(
 		personUtil: PersonUtil
 	) {}
-	
+
 	async createPerson(personDto) {
 		const person: Person = this.personUtil.createNewPerson(personDto);
 		await this.repo.save(person);
 		this.cacher.cache(person);
 		return person;
 	}
-	
+
 	getCachedPerson(id: string): Person {
 		// by then time this is called  after createPerson, cached other person is gone! (2)
-		return this.personUtil.fastGetPerson(id); 
+		return this.personUtil.fastGetPerson(id);
 	}
 }
 
 ```
 
-We can see that on createNewPerson method, after Person is created, there’s a command to flush allCache. This will cause a bug whenever (2) is called, since there will be no data. 
+We can see that on createNewPerson method, after Person is created, there’s a command to flush allCache. This will cause a bug whenever (2) is called, since there will be no data.
 
 This will lead to one rule, if the method is not a business logic class, do only one and one thing only.
 
@@ -117,16 +117,16 @@ It only has 3 main super basic computation steps:
 * Process
 * Output
 
-Why this simple process matters? If we see this pure function does not have any side effects (changin states), its just input, process, output. 
+Why this simple process matters? If we see this pure function does not have any side effects (changin states), its just input, process, output.
 
-This function can run on 1 machine instance, or load balanced to many instances without worry about any error. 
+This function can run on 1 machine instance, or load balanced to many instances without worry about any error.
 
 ## Inversion of Control
-But it’s not OOP, how about if we wanna do that in a Class? 
+But it’s not OOP, how about if we wanna do that in a Class?
 
 Use Dependency Injection. Like this
 
-```
+```typescript
 class Integer {
 	constructor(num number){
 		this.num = number
@@ -143,9 +143,9 @@ const doubled = number.double()
 Depencency injection will input number as constructor to Integer class, this way will make sure it is stay pure as long as you don’t change `this.num` value.
 
 
-### Don’t Repeat Yourself  —> Open Closed Principle
+### Don’t Repeat Yourself: Open Closed Principle
 
-Class or function should be made easy by others to be used later in the future. 
+Class or function should be made easy by others to be used later in the future.
 
 Check for other classes or functions in the project, if other engineer has done it, why reinvent the wheel.
 
@@ -160,17 +160,17 @@ Several tips:
 
 ## Immutability is King
 Immutability means no mutable state.
-Why?  Immutability leads to no shared state, no side effects, leads to scalable systems. Pure functions is one way to introduce no shared state. 
+Why?  Immutability leads to no shared state, no side effects, leads to scalable systems. Pure functions is one way to introduce no shared state.
 
 Several tips:
 * No mutable GLOBAL variables, always use Constants if global
-* Use immutable data structures. 
-* Careful with Singleton patterns, it introduce mutability 
-* Use persistence (Redis, Memcached, ACID compliante database) for storing state. 
+* Use immutable data structures.
+* Careful with Singleton patterns, it introduce mutability
+* Use persistence (Redis, Memcached, ACID compliante database) for storing state.
 
 ## Reference
 * [Curly’s Law: Do One Thing](https://blog.codinghorror.com/curlys-law-do-one-thing/)
-* Sandy Metz’s Rule
+* [Sandy Metz’s Rule](https://thoughtbot.com/blog/sandi-metz-rules-for-developers)
 
 #blog #guidelines
 
