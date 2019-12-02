@@ -12,7 +12,7 @@ function getName(text) {
 ```
 
 
-As we see function above looks correct  and straightforward, but for user who are new to this function, looking at the function name without checking the inner implementation will not get you anywhere. What is `getName()` what is `text` supposed to be? Some reader who don’t really now javascript, they need to search for what is `split` function, thus the readability is not really straightforward.
+As we see function above looks correct  and straightforward, but for user who are new to this function, looking at the function name without checking the inner implementation will not get you anywhere. What is `getName()` what is `text` supposed to be? Some reader who don’t really know javascript, they need to search for what is `split` function, thus the readability is not really straightforward.
 
 Now let’s compare with this function:
 
@@ -149,7 +149,7 @@ Class or function should be made easy by others to be used later in the future.
 
 Check for other classes or functions in the project, if other engineer has done it, why reinvent the wheel.
 
-If a module or package in a repo can be used by others also, we need to split it and make it a libraries or dependencies of it.
+If a module or package in a repo can be used by others, we need to split it and make it a libraries or dependencies of it.
 
 ## Test, Test, and Test
 Always test your code, and make it automated by writing a unit test for testing the unit, and for the whole business logics by using integration test.
