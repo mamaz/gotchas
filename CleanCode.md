@@ -47,8 +47,53 @@ Smaller method / function makes it easy to read, debug and update. Several best 
 * Maximum of 4 parameters, hash options are parameters. (Sandy Metz’s Rule)
 * No longer than 20 lines of code (Clean Code)
 
-## Do One Thing, and Do it Well: Single Responsibility
-Large software is built from many pieces that works well.  Most complexities comes from one thing that should do just one thing, but do 2 or more things instead.
+## Keep It Organized
+
+Organized by functionality or domain, separate package, modules or class based on domain.
+
+For backend service project, usually we have controllers (api and routers), service, and, database accessing module (DAO, active record, repository pattern). It is a good practice if we don't separate based on classification of patter like this. Instead, we separate by domain model, and inside that domain model
+
+```
+src
+	authentication
+		controllers
+		service
+		repository
+		utils
+		tests
+	search
+		controllers
+		service
+		repository
+		utils
+		tests
+```
+
+For frontend project we can separate by components or modules.
+
+```
+	modules
+		homescreen
+			forms
+			utils
+			tests
+		users
+			list
+			assets
+			tests
+	// for generic components that is used throughout the project
+	components
+		buttons
+		forms
+		tests
+```
+
+
+## Keep it to be Singly Responsible
+
+*"Do one thing, and do it well"* -Unix Philosophy
+
+Large software is built from many pieces that works well. Most complexities and bugs come from one thing, that should do just one thing, but more things instead.
 
 Consider this example:
 
@@ -99,9 +144,8 @@ We can see that on createNewPerson method, after Person is created, there’s a 
 
 This will lead to one rule, if the method is not a business logic class, do only one and one thing only.
 
-
-### Pure Functions
-In functional programming paradigm, there terminology called pure function, what does that mean.
+### Pure Function
+In functional programming paradigm, there is a terminology called pure function, what does that mean.
 Let’s see this simple basic function like this:
 
 ```
@@ -121,10 +165,18 @@ Why this simple process matters? If we see this pure function does not have any 
 
 This function can run on 1 machine instance, or load balanced to many instances without worry about any error.
 
-## Inversion of Control
-But it’s not OOP, how about if we wanna do that in a Class?
+## Don’t Repeat Yourself: Open Closed Principle
 
-Use Dependency Injection. Like this
+Class or function should be made easy by others to be used later in the future.
+
+Check for other classes or functions in the project, if other engineer has done it, why reinvent the wheel.
+
+If a module or package in a repo can be used by others, we need to split it and make it a libraries or dependencies of it.
+
+
+## Inversion of Control
+
+Use Dependency Injection for pure functions in OOP world. Like this:
 
 ```typescript
 class Integer {
@@ -142,15 +194,6 @@ const doubled = number.double()
 
 Depencency injection will input number as constructor to Integer class, this way will make sure it is stay pure as long as you don’t change `this.num` value.
 
-
-### Don’t Repeat Yourself: Open Closed Principle
-
-Class or function should be made easy by others to be used later in the future.
-
-Check for other classes or functions in the project, if other engineer has done it, why reinvent the wheel.
-
-If a module or package in a repo can be used by others, we need to split it and make it a libraries or dependencies of it.
-
 ## Test, Test, and Test
 Always test your code, and make it automated by writing a unit test for testing the unit, and for the whole business logics by using integration test.
 
@@ -159,6 +202,7 @@ Several tips:
 * Integration test should test real world business case,  by trying it black-boxed from its service API.
 
 ## Immutability is King
+
 Immutability means no mutable state.
 Why?  Immutability leads to no shared state, no side effects, leads to scalable systems. Pure functions is one way to introduce no shared state.
 
